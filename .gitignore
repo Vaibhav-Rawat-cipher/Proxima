@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+*.log
+
+# Foundry
+contracts/out/
+contracts/cache/
+contracts/broadcast/*/31337/
+contracts/broadcast/**/dry-run/
