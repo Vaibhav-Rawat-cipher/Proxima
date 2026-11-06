@@ -1,0 +1,24 @@
+{
+  "name": "@blindspot/sdk",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "Connect any browser agent to the Blindspot wallet: connect() opens the wallet popup for the owner's approval and returns a session with OpenAI-compatible tool definitions, callTool() and SessionRevokedError. No dependencies, no keys.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "5.6.3",
+    "vitest": "^2.1.8"
+  }
+}
