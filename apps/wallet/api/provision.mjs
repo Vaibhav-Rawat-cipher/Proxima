@@ -2,22 +2,24 @@
 // Same handler as the local apps/relayer/serve.mjs. It can only call TrialProvisioner.provision(agent); it never holds
 // an agent key or Safe funds. Limits: per-IP limit here (per function instance, best-effort), the provisioner's own
 // on-chain caps (global 100/day, relayer quota, one per sender per day), kill switch RELAYER_ENABLED=false.
-// Env (Vercel project settings): SEPOLIA_RPC_URL, TRIAL_RELAYER_PRIVATE_KEY, TRIAL_PROVISIONER_ADDRESS,
-// RELAYER_ENABLED (optional), RELAYER_PER_IP_DAILY (optional).
+// Env (Vercel project settings): SEPOLIA_RPC_URL, TRIAL_RELAYER_PRIVATE_KEY; optional: TRIAL_PROVISIONER_ADDRESS,
+// RELAYER_ENABLED (kill switch, default true), RELAYER_PER_IP_DAILY (default 2).
 import { createPublicClient, createWalletClient, getAddress, http } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import { sepolia } from 'viem/chains';
 import { createRateLimiter, createRelayer } from '../../relayer/relayer.mjs';
 
 const env = process.env;
+// The deployed TrialProvisioner on Sepolia (config/sepolia.json → trials.provisioner); override with the env var.
+const PROVISIONER = env.TRIAL_PROVISIONER_ADDRESS || '0xB93A0C4663662BFCb4e31C75FF8E2D31D274b209';
 let handle = null;
 function relayer() {
   if (handle) return handle;
-  if (!env.SEPOLIA_RPC_URL || !env.TRIAL_RELAYER_PRIVATE_KEY || !env.TRIAL_PROVISIONER_ADDRESS) return null;
+  if (!env.SEPOLIA_RPC_URL || !env.TRIAL_RELAYER_PRIVATE_KEY) return null;
   const account = privateKeyToAccount(env.TRIAL_RELAYER_PRIVATE_KEY);
   const transport = http(env.SEPOLIA_RPC_URL);
   handle = createRelayer({
-    provisioner: getAddress(env.TRIAL_PROVISIONER_ADDRESS),
+    provisioner: getAddress(PROVISIONER),
     publicClient: createPublicClient({ chain: sepolia, transport }),
     walletClient: createWalletClient({ chain: sepolia, transport, account }),
     account,
