@@ -294,7 +294,7 @@ async function approveTx(s: Session, req: ApprovalRequest): Promise<boolean> {
   const fee = Number(formatEther(req.gas * req.maxFeePerGas));
   const tech = `<details class="tech"><summary>Transaction details</summary><pre>from   ${req.from} (agent key)
 to     ${req.to} (BlindspotModule)
-call   module.execute (built by Blindspot from the checked request)
+call   module.execute (built by Proxima from the checked request)
 nonce  ${req.nonce}
 proposal ${req.decision.proposalId}</pre></details>`;
   if (req.simulated)
@@ -317,7 +317,7 @@ proposal ${req.decision.proposalId}</pre></details>`;
 }
 /** Not a question: Blindspot stopped a request. Shown on top so the owner sees why (does not block the agent). */
 function showBlocked(d: Decision, s: Session) {
-  void sheet({ site: s.origin, title: 'Blindspot blocked a payment', body: `${paymentBody(d, '')}<p class="muted" style="margin-top:10px">Nothing was signed. The agent was told it is not allowed.</p>`, confirm: 'Got it', sessionId: s.id });
+  void sheet({ site: s.origin, title: 'Proxima blocked a payment', body: `${paymentBody(d, '')}<p class="muted" style="margin-top:10px">Nothing was signed. The agent was told it is not allowed.</p>`, confirm: 'Got it', sessionId: s.id });
 }
 
 const shortAddr = (a: string) => (a.length > 12 ? `${a.slice(0, 6)}…${a.slice(-4)}` : a);

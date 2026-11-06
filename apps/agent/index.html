@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Agent</title>
+    <title>Proxima Agent</title>
     <style>
       :root {
         --bg: #f6f7f9; --card: #ffffff; --ink: #11131a; --muted: #6b7180; --line: #e6e8ee;
@@ -192,7 +192,7 @@
   </head>
   <body>
     <header>
-      <div class="brand"><span class="logo"></span>Agent</div>
+      <div class="brand"><span class="logo"></span>Proxima</div>
       <div class="hdr-right">
         <button id="aiPill" class="pill" title="AI model and key">Unlock AI</button>
         <div id="session"></div>
@@ -204,51 +204,42 @@
       <div class="inner">
         <div id="hero" class="hero">
           <section class="landing">
-            <div class="eyebrow">Blindspot · agent wallet</div>
-            <h1>Let AI agents pay for you — without trusting them with your money.</h1>
-            <p class="lead">AI agents can be tricked by a poisoned invoice, a fake website or a malicious token. Blindspot checks every payment against rules <b>you</b> set on your ENS name, privately, before anything is signed — and the chain enforces those rules even if the agent is fooled.</p>
+            <div class="eyebrow">Proxima</div>
+            <h1>Your AI agent can be tricked. Your money can't.</h1>
+            <p class="lead">Set rules on your ENS name. Every payment is checked privately before signing, and enforced on-chain.</p>
             <div class="cta"><a href="#setup" id="getStarted" class="btn primary">Get started</a><a href="#how" class="btn">How it works</a></div>
           </section>
           <section id="how" class="block">
             <div class="eyebrow">How it works</div>
             <div class="grid3">
-              <div class="feat"><div class="fnum">1</div><h3>You set the rules</h3><p>Who can be paid, how much per payment and per day, when to ask you. Stored on your ENS name — only you can change them.</p></div>
-              <div class="feat"><div class="fnum">2</div><h3>The agent asks</h3><p>The agent holds no keys and no money. It can only propose a payment to your Blindspot wallet.</p></div>
-              <div class="feat"><div class="fnum">3</div><h3>Blindspot checks</h3><p>Every payment is simulated and checked. Allowed, blocked, or sent to you for approval — with a plain reason and the exact source of a trick.</p></div>
-            </div>
-          </section>
-          <section class="block">
-            <div class="eyebrow">Why it's different</div>
-            <div class="grid2">
-              <div class="feat"><h3>Enforced on-chain</h3><p>Even a stolen agent key can't move money outside your rules: the smart contract refuses.</p></div>
-              <div class="feat"><h3>Private by default</h3><p>Every read and payment goes through Anon-RPC, so no one links your activity to your IP address.</p></div>
-              <div class="feat"><h3>See where it went wrong</h3><p>When something is blocked, you see which document or page tried to trick the agent.</p></div>
-              <div class="feat"><h3>You stay in control</h3><p>Change limits in seconds, approve big payments, or disconnect the agent instantly.</p></div>
+              <div class="feat"><div class="fnum">1</div><h3>You set rules</h3><p>Who, how much, how often. On your ENS name.</p></div>
+              <div class="feat"><div class="fnum">2</div><h3>The agent asks</h3><p>No keys, no money. It can only propose.</p></div>
+              <div class="feat"><div class="fnum">3</div><h3>Proxima checks</h3><p>Allow, block or ask you, with the reason.</p></div>
             </div>
           </section>
           <section id="setup" class="block">
             <div class="eyebrow">Get started</div>
-            <h2 class="setup-h">Two steps and you're ready</h2>
+            <h2 class="setup-h">Two steps</h2>
             <div id="setupMsg" class="setup-msg" role="status" style="display:none"></div>
             <div class="setup-grid">
             <div class="scard" id="s2">
               <div class="snum">1</div>
               <h3>Unlock the AI</h3>
-              <p class="muted" id="s2text">Add your AI key once — it is encrypted with a password in this browser.</p>
+              <p class="muted" id="s2text">Add your AI key once. It stays encrypted in this browser.</p>
               <button id="openKey" class="primary">Add AI key</button>
               <div id="s2done" class="ok" style="display:none">✓ AI ready</div>
             </div>
             <div class="scard" id="s1">
               <div class="snum">2</div>
-              <h3>Ask the agent to connect</h3>
-              <p class="muted">Type <b>“connect my wallet”</b>. The agent calls <code>connect()</code> from the Blindspot SDK, your wallet opens, and you approve. The agent holds no keys — it can only ask.</p>
+              <h3>Connect</h3>
+              <p class="muted">Type <b>“connect my wallet”</b> and approve in the popup.</p>
               <div id="s1done" class="ok" style="display:none">✓ Connected</div>
             </div>
           </div>
           </section>
         </div>
 
-        <div class="empty" id="empty">Ask the agent to “connect my wallet”, then tell it what to do.</div>
+        <div class="empty" id="empty">Say “connect my wallet”, then give a task.</div>
         <ul id="log"></ul>
       </div>
     </div>

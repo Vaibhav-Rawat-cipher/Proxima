@@ -1,5 +1,5 @@
 // Outside agent app (Step 3a). An ordinary tool-calling LLM agent that holds NO wallet keys and NO funds. It
-// connects to the Blindspot wallet with @blindspot/sdk (popup + owner approval + session) and can only ask the
+// connects to the Proxima wallet with @blindspot/sdk (popup + owner approval + session) and can only ask the
 // wallet to run tools.
 import { connect, type BlindspotSession } from '@blindspot/sdk';
 import { RULES_FIRST, SYSTEM_PROMPT, decryptSecret, encryptSecret, openAiCompatibleLlm, runAgentWith, type EncryptedKey, type LlmResponse } from '@blindspot/core';
@@ -12,9 +12,9 @@ const esc = (s: unknown) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCode
 // ------------------------------------------------------------------ models
 type ModelChoice = { label: string; url: string; model: string; keyName: string; keyRequired: boolean; extraBody?: Record<string, unknown> };
 const GROQ = 'https://api.groq.com/openai/v1/chat/completions';
-/** Hosted site only: Blindspot's rate-limited LLM proxy on this app's own origin (declared backend; holds the key). */
+/** Hosted site only: Proxima's rate-limited LLM proxy on this app's own origin (declared backend; holds the key). */
 const HOSTED: Record<string, ModelChoice> = __AGENT__.llmProxyPath
-  ? { blindspot: { label: 'Blindspot AI · gpt-oss-120b (free, rate-limited)', url: `${location.origin}${__AGENT__.llmProxyPath}`, model: 'openai/gpt-oss-120b', keyName: 'hosted', keyRequired: false } }
+  ? { blindspot: { label: 'Proxima AI · gpt-oss-120b (free, rate-limited)', url: `${location.origin}${__AGENT__.llmProxyPath}`, model: 'openai/gpt-oss-120b', keyName: 'hosted', keyRequired: false } }
   : {};
 const DEFAULT_MODEL = __AGENT__.llmProxyPath ? 'blindspot' : 'groq-120b';
 const MODELS: Record<string, ModelChoice> = {
@@ -50,7 +50,7 @@ function renderKey() {
   if (k === 'hosted') {
     // Hosted model: no key in the browser at all (the proxy holds it).
     $('keyTitle').textContent = 'AI ready';
-    $('keySub').textContent = 'You are using Blindspot’s free, rate-limited AI. To use your own key, pick another model below.';
+    $('keySub').textContent = 'You are using Proxima’s free, rate-limited AI. To use your own key, pick another model below.';
     $('keyState').innerHTML = '';
     for (const id of ['aiKeyRow', 'aiUnlockRow', 'forgetKey']) $(id).style.display = 'none';
     if ($('hint')) renderSteps();
@@ -200,7 +200,7 @@ function renderSteps() {
   $('s2text').textContent = keyOk ? 'Your AI key is unlocked for this tab.' : storedKey(choice().keyName) ? 'Your AI key is saved encrypted. Enter your password to unlock it.' : 'Add your AI key once — it is encrypted with a password in this browser.';
   $('aiPill').innerHTML = keyOk ? '<span class="ok">●</span> AI ready' : 'Unlock AI';
   ($('run') as HTMLButtonElement).disabled = running || connecting;
-  $('hint').textContent = !keyOk ? 'Press Send — you’ll be asked to unlock the AI first.' : !connected ? 'Just ask: “connect my wallet” — the agent calls the Blindspot SDK and your wallet opens to approve.' : 'Your Blindspot wallet checks every payment against your rules before anything is sent.';
+  $('hint').textContent = !keyOk ? 'Press Send — you’ll unlock the AI first.' : !connected ? 'Say “connect my wallet” to start.' : 'Every payment is checked against your rules before sending.';
   $('s2').classList.toggle('now', !keyOk);
   $('s1').classList.toggle('now', keyOk && !connected);
 }
@@ -254,7 +254,7 @@ async function doConnect(): Promise<boolean> {
   let ok = false;
   // The chat already shows this attempt (the agent's connect_wallet step + the working line): no extra notes here.
   try {
-    const s = await connect({ walletUrl: WALLET_URL, agentName: 'Blindspot example agent', features: 'popup,width=420,height=740' });
+    const s = await connect({ walletUrl: WALLET_URL, agentName: 'Proxima agent', features: 'popup,width=420,height=740' });
     session = s;
     lastEnded = null;
     s.onEnded((reason) => {
@@ -280,7 +280,7 @@ $('disconnect').onclick = () => {
 
 // ------------------------------------------------------------------ chat log (plain words; technical details folded)
 const STEP: Record<string, string> = {
-  connect_wallet: 'Connecting to your Blindspot wallet (SDK connect())',
+  connect_wallet: 'Connecting to your Proxima wallet (SDK connect())',
   disconnect_wallet: 'Disconnecting the wallet',
   get_rules: 'Reading your rules',
   get_balances: 'Checking balances',
@@ -345,7 +345,7 @@ function note(text: string, cls = '') {
   add(`sys ${cls}`, esc(text));
 }
 const DONE: Record<string, string> = {
-  connect_wallet: '✓ Connected to your Blindspot wallet',
+  connect_wallet: '✓ Connected to your Proxima wallet',
   disconnect_wallet: '✓ Disconnected the wallet',
   get_rules: '✓ Read your rules',
   get_balances: '✓ Checked balances',
@@ -439,16 +439,16 @@ function friendlyError(m: string): string {
 // are only offered to the model once a session exists.
 const CONNECT_TOOL = {
   name: 'connect_wallet',
-  description: "Connect to the owner's Blindspot wallet with the Blindspot SDK. Opens the wallet; the owner approves the connection there. Returns the agent's ENS name and the owner's current rules. Call this when the user asks to connect, or before any task that needs the wallet.",
+  description: "Connect to the owner's Proxima wallet with the Proxima SDK. Opens the wallet; the owner approves the connection there. Returns the agent's ENS name and the owner's current rules. Call this when the user asks to connect, or before any task that needs the wallet.",
   parameters: { type: 'object', properties: {}, additionalProperties: false },
 };
 const DISCONNECT_TOOL = {
   name: 'disconnect_wallet',
-  description: 'End the current Blindspot wallet session. Only call this when the user asks to disconnect.',
+  description: 'End the current Proxima wallet session. Only call this when the user asks to disconnect.',
   parameters: { type: 'object', properties: {}, additionalProperties: false },
 };
 const CONNECT_PROMPT =
-  "You reach the owner's wallet only through the Blindspot SDK. If the wallet is not connected and the user asks to connect, or the task needs the wallet (rules, balances, documents, payments), call connect_wallet first. If the user only asked to connect, confirm the connection in one short sentence and stop.";
+  "You reach the owner's wallet only through the Proxima SDK. If the wallet is not connected and the user asks to connect, or the task needs the wallet (rules, balances, documents, payments), call connect_wallet first. If the user only asked to connect, confirm the connection in one short sentence and stop.";
 const connectedNow = () => Boolean(session && !session.endedBy);
 type ToolDef = { name: string; description: string; parameters: Record<string, unknown> };
 /** The tools offered to the model right now. */
@@ -458,13 +458,13 @@ const currentTools = (): ToolDef[] => (connectedNow() ? [...session!.tools, DISC
  *  owner clicks one button in the chat and connect() runs from that click. Resolves true once connected. */
 function connectViaButton(): Promise<boolean> {
   return new Promise((resolve) => {
-    const li = add('sys warn', 'The agent wants to connect to your Blindspot wallet. <button class="primary" data-act="open">Open wallet to connect</button> <button data-act="cancel">Not now</button>');
+    const li = add('sys warn', 'The agent wants to connect to your Proxima wallet. <button class="primary" data-act="open">Open wallet to connect</button> <button data-act="cancel">Not now</button>');
     if (!li) return resolve(false);
     working('Waiting for you to open the wallet…');
     // The agent's connect_wallet step line reports the outcome, so this prompt simply goes away.
     li.querySelector<HTMLButtonElement>('[data-act="open"]')!.onclick = () => {
       li.remove();
-      working('Opening your Blindspot wallet — unlock it and approve the connection there…');
+      working('Opening your Proxima wallet — unlock it and approve the connection there…');
       void doConnect().then(resolve);
     };
     li.querySelector<HTMLButtonElement>('[data-act="cancel"]')!.onclick = () => {
@@ -531,7 +531,7 @@ async function run() {
         onModelReply: (res, step) => {
           logReply(res, step);
           const t = res.toolCalls[0]?.name;
-          if (t === 'connect_wallet' && !connectedNow()) working('Opening your Blindspot wallet — approve the connection there…');
+          if (t === 'connect_wallet' && !connectedNow()) working('Opening your Proxima wallet — approve the connection there…');
           else if (t) working(t === 'execute' ? 'Waiting for your approval in the wallet window…' : t === 'propose' ? 'The wallet is simulating and checking the payment…' : `${STEP[t] ?? t} (privately, through the wallet)…`);
         },
         onToolResult: (name, content) => {

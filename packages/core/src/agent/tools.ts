@@ -22,7 +22,7 @@ export const TOOL_DEFS: LlmToolDef[] = [
   {
     name: 'propose',
     description:
-      'Propose a transaction from the wallet. Blindspot simulates it, checks it against the owner\'s rules and returns ALLOW, BLOCK or ASK_OWNER with reasons. Declare exactly who receives what.',
+      'Propose a transaction from the wallet. Proxima simulates it, checks it against the owner\'s rules and returns ALLOW, BLOCK or ASK_OWNER with reasons. Declare exactly who receives what.',
     parameters: {
       type: 'object',
       properties: {
@@ -54,7 +54,7 @@ export const TOOL_DEFS: LlmToolDef[] = [
       required: ['actions', 'declared_effects', 'reason'],
     },
   },
-  { name: 'execute', description: 'Execute a proposal that Blindspot ALLOWED. Pass the proposal_id returned by propose.', parameters: { type: 'object', properties: { proposal_id: str }, required: ['proposal_id'] } },
+  { name: 'execute', description: 'Execute a proposal that Proxima ALLOWED. Pass the proposal_id returned by propose.', parameters: { type: 'object', properties: { proposal_id: str }, required: ['proposal_id'] } },
 ];
 
 export class ToolInputError extends Error {
