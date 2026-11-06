@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agent</title>
+    <style>
+      :root {
+        --bg: #f6f7f9; --card: #ffffff; --ink: #11131a; --muted: #6b7180; --line: #e6e8ee;
+        --accent: #0f766e; --accent-ink: #fff; --user: #0f766e; --ok: #0f8a4b; --bad: #c4322b; --warn: #b26b00;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root { --bg: #0e1014; --card: #171a21; --ink: #eceff4; --muted: #9aa0ad; --line: #272b35; --accent: #2dd4bf; --accent-ink: #062b27; --user: #134e4a; }
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body { margin: 0; font: 15px/1.5 -apple-system, "Segoe UI", Inter, system-ui, sans-serif; color: var(--ink); background: var(--bg); display: flex; flex-direction: column; }
+      header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--line); background: var(--card); }
+      .brand { font-weight: 700; display: flex; gap: 10px; align-items: center; }
+      .logo { width: 28px; height: 28px; border-radius: 9px; background: linear-gradient(135deg, #0f766e, #22c55e); }
+      .hdr-right { display: flex; gap: 8px; align-items: center; }
+      #session { font-size: 13px; color: var(--muted); max-width: 360px; text-align: right; }
+      button { font: inherit; font-weight: 600; padding: 9px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+      button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+      button:disabled { opacity: .5; cursor: default; }
+      .wrap { flex: 1; overflow: auto; }
+      .inner { max-width: 760px; margin: 0 auto; padding: 18px; }
+      details.settings { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 14px; margin-bottom: 14px; }
+      details.settings summary { cursor: pointer; font-weight: 600; }
+      .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+      input, select, textarea { font: inherit; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); color: var(--ink); }
+      input { flex: 1; min-width: 160px; } select { flex: 1; min-width: 240px; }
+      .muted { color: var(--muted); font-size: 12px; } .ok { color: var(--ok); } .bad { color: var(--bad); } .warn { color: var(--warn); }
+      .badge { background: #7c2d12; color: #fff; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 4px; letter-spacing: .04em; vertical-align: middle; }
+      #log { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+      .msg { max-width: 85%; padding: 10px 14px; border-radius: 16px; word-break: break-word; }
+      .msg.user { align-self: flex-end; background: var(--user); color: #fff; border-bottom-right-radius: 4px; }
+      .msg.assistant { align-self: flex-start; background: var(--card); border: 1px solid var(--line); border-bottom-left-radius: 4px; white-space: pre-wrap; }
+      .msg.step { align-self: flex-start; font-size: 13px; color: var(--muted); padding: 2px 4px; max-width: 100%; }
+      .msg.step b { color: var(--ink); font-weight: 600; }
+      .msg.sys { align-self: center; font-size: 12px; color: var(--muted); text-align: center; max-width: 100%; }
+      .msg.sys.bad { color: var(--bad); } .msg.sys.warn { color: var(--warn); } .msg.sys.ok { color: var(--ok); }
+      details.tech { margin-top: 2px; } details.tech summary { cursor: pointer; font-size: 11px; color: var(--muted); }
+      details.tech pre { font: 11px/1.45 ui-monospace, Menlo, monospace; white-space: pre-wrap; word-break: break-all; color: var(--muted); max-height: 260px; overflow: auto; background: var(--bg); padding: 8px; border-radius: 8px; }
+      .empty { text-align: center; color: var(--muted); margin: 40px 0; }
+      footer { border-top: 1px solid var(--line); background: var(--card); padding: 12px 18px; }
+      .composer { max-width: 760px; margin: 0 auto; display: flex; gap: 8px; align-items: flex-end; }
+      .composer textarea { flex: 1; resize: none; min-height: 48px; max-height: 140px; }
+      .presets { max-width: 760px; margin: 0 auto 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+      .chip { font-size: 12px; font-weight: 500; padding: 5px 10px; border-radius: 999px; }
+      a { color: var(--accent); }
+
+
+
+
+
+      /* ---- Monochrome night (black / white, minimal) ---- */
+      :root, :root:not([data-x]) {
+        color-scheme: dark;
+        --bg: #000000; --card: #0b0b0b; --ink: #f5f5f5; --muted: #8a8a8a; --line: #222222;
+        --accent: #ffffff; --accent-ink: #000000; --user: #ffffff; --brand: #ffffff;
+        --ok: #4ade80; --bad: #f87171; --warn: #fbbf24;
+        --ok-bg: rgba(74, 222, 128, .08); --bad-bg: rgba(248, 113, 113, .08); --warn-bg: rgba(251, 191, 36, .08);
+        --shadow: none; --radius: 16px;
+      }
+      @media (prefers-color-scheme: light) {
+        :root { --bg: #000; --card: #0b0b0b; --ink: #f5f5f5; --muted: #8a8a8a; --line: #222; --accent: #fff; --accent-ink: #000; --user: #fff;
+          --ok: #4ade80; --bad: #f87171; --warn: #fbbf24; --ok-bg: rgba(74,222,128,.08); --bad-bg: rgba(248,113,113,.08); --warn-bg: rgba(251,191,36,.08); }
+      }
+      body { background: #000 !important; color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; letter-spacing: -0.005em; }
+      header, footer, nav.tabs, .top { background: #000 !important; border-color: var(--line) !important; box-shadow: none !important; }
+      .brand { font-weight: 600; font-size: 18px; color: #fff; letter-spacing: -0.02em; }
+      .logo, .avatar { position: relative !important; flex: none; }
+      .logo { width: 24px !important; height: 24px !important; border-radius: 50% !important; background: #fff !important; }
+      .logo::after { content: "" !important; position: absolute; inset: 5px; border-radius: 50%; background: #000; box-shadow: inset 0 0 0 2px #fff; }
+      .card, details.settings, section.settings { box-shadow: none !important; border: 1px solid var(--line) !important; border-radius: var(--radius) !important; background: var(--card) !important; }
+      .card h2 { color: var(--muted); font-weight: 500; letter-spacing: .12em; font-size: 11px; text-transform: uppercase; }
+      .avatar { background: #000 !important; border: 1px solid #fff !important; }
+      .avatar::after { content: "AI" !important; position: absolute; inset: 0; display: grid !important; place-items: center; color: #fff !important; font-weight: 600 !important; font-size: 13px; }
+      .balance { font-weight: 300; font-size: 40px; letter-spacing: -0.03em; color: #fff; font-variant-numeric: tabular-nums; }
+      button { border-radius: 999px !important; border: 1px solid #333 !important; background: transparent !important; color: #fff !important; font-weight: 500 !important; box-shadow: none !important; }
+      button:hover:not(:disabled) { border-color: #fff !important; background: #111 !important; }
+      button.primary { background: #fff !important; border-color: #fff !important; color: #000 !important; }
+      button.primary:hover:not(:disabled) { background: #d4d4d4 !important; border-color: #d4d4d4 !important; }
+      button.danger { color: var(--bad) !important; border-color: #3a1a1a !important; }
+      .pen { color: var(--muted) !important; padding: 4px 9px !important; }
+      .chip { color: var(--muted) !important; font-weight: 400 !important; }
+      .chip:hover { color: #fff !important; }
+      input, textarea, select { background: #000 !important; color: #fff !important; border: 1px solid #333 !important; border-radius: 10px !important; }
+      input:focus, textarea:focus, select:focus { outline: none !important; border-color: #fff !important; box-shadow: none !important; }
+      .rule-v input[type=text], .rule-v textarea { background: transparent !important; border-color: transparent !important; }
+      .rule-v .editing { background: #000 !important; border-color: #fff !important; }
+      .msg.user { background: #fff !important; color: #000 !important; }
+      .msg.assistant { background: var(--card) !important; border: 1px solid var(--line) !important; color: var(--ink) !important; }
+      a { color: #fff !important; text-decoration: underline; text-underline-offset: 2px; }
+      .ok { color: var(--ok) !important; } .bad { color: var(--bad) !important; } .warn { color: var(--warn) !important; }
+      nav.tabs button { border: 0 !important; background: transparent !important; color: #666 !important; }
+      nav.tabs button.on { color: #fff !important; }
+      nav.tabs button.on::before { content: ""; position: absolute; top: -7px; left: 30%; right: 30%; height: 2px; background: #fff; border-radius: 2px; }
+      .badge { background: transparent !important; color: var(--muted) !important; border: 1px solid #444; font-weight: 500 !important; }
+      nav.tabs .badge { background: #fff !important; color: #000 !important; border: 0; }
+      .dot.ok { background: var(--ok) !important; } .dot { background: var(--warn); } .dot.bad { background: var(--bad) !important; }
+      .decision { border: 1px solid var(--line); background: #050505 !important; }
+      .decision.ok { border-color: rgba(74,222,128,.35); } .decision.bad { border-color: rgba(248,113,113,.35); } .decision.warn { border-color: rgba(251,191,36,.35); }
+      .decision.ok .verdict { color: var(--ok); } .decision.bad .verdict { color: var(--bad); } .decision.warn .verdict { color: var(--warn); }
+      .banner.sim { background: #fff !important; color: #000 !important; } .banner.direct { background: #7f1d1d !important; }
+      .prompt { border: 1px solid #fff !important; box-shadow: 0 24px 64px rgba(0, 0, 0, .8) !important; }
+      #prompts:not(:empty) { background: rgba(0, 0, 0, .8) !important; }
+      details.tech pre { background: #000 !important; border: 1px solid var(--line); }
+      .steps { display: flex; gap: 10px; flex-wrap: wrap; padding: 14px 16px !important; margin-bottom: 14px; }
+      .step { flex: 1; min-width: 170px; display: flex; gap: 10px; align-items: center; color: var(--muted); font-size: 14px; }
+      .step span { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; font-size: 12px; flex: none; }
+      .step.now { color: var(--ink); } .step.now span { border-color: var(--ink); }
+      .step.done { color: var(--muted); } .step.done span { background: var(--ok); border-color: var(--ok); color: #000; }
+      .pill { padding: 6px 12px !important; font-size: 12px !important; }
+      .dev { max-width: 760px; margin: 0 auto 10px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; padding: 8px; border: 1px dashed var(--line); border-radius: 12px; }
+      .hint { text-align: center; margin-top: 8px; }
+      .hero { padding: 26px 0 6px; }
+      .hero h1 { font-size: 34px; font-weight: 600; letter-spacing: -0.03em; margin: 0 0 8px; }
+      .hero > p { color: var(--muted); margin: 0 0 22px; max-width: 580px; font-size: 15px; }
+      .setup-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; }
+      .scard { border: 1px solid var(--line); border-radius: 16px; padding: 18px; background: var(--card); }
+      .scard h3 { margin: 10px 0 4px; font-size: 16px; font-weight: 600; }
+      .scard p { margin: 0 0 14px; }
+      .snum { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; font-size: 13px; }
+      .scard.done { opacity: .65; } .scard.done .snum { background: var(--ok); border-color: var(--ok); color: #000; }
+      #setupCard { border: 0 !important; padding: 0 !important; margin: 0 !important; background: transparent !important; }
+      #setupCard h2, #setupCard > p.muted:last-child { display: none; }
+      html { scroll-behavior: smooth; }
+      .landing { padding: 40px 0 26px; }
+      .eyebrow { color: var(--muted); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 14px; }
+      .landing h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.1; font-weight: 600; letter-spacing: -0.03em; margin: 0 0 16px; max-width: 760px; }
+      .lead { color: #bdbdbd; font-size: 17px; line-height: 1.6; max-width: 680px; margin: 0 0 26px; }
+      .lead b { color: #fff; }
+      .cta { display: flex; gap: 10px; flex-wrap: wrap; }
+      a.btn { display: inline-block; text-decoration: none !important; padding: 12px 20px; border-radius: 999px; border: 1px solid #333; color: #fff !important; font-weight: 500; }
+      a.btn.primary { background: #fff; color: #000 !important; border-color: #fff; }
+      a.btn:hover { border-color: #fff; }
+      .block { padding: 30px 0 6px; border-top: 1px solid var(--line); margin-top: 24px; }
+      .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+      .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+      .feat { border: 1px solid var(--line); border-radius: 16px; padding: 18px; background: var(--card); }
+      .feat h3 { margin: 8px 0 6px; font-size: 16px; font-weight: 600; }
+      .feat p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+      .fnum { width: 28px; height: 28px; border-radius: 50%; border: 1px solid #fff; display: grid; place-items: center; font-size: 13px; }
+      .setup-h { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 16px; }
+      .hero { padding: 0 !important; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand"><span class="logo"></span>Agent</div>
+      <div class="hdr-right">
+        <button id="aiPill" class="pill" style="display:none" title="Change AI model or key">● AI ready</button>
+        <div id="session"></div>
+        <button id="connect" class="primary">Connect wallet</button>
+        <button id="disconnect" style="display:none">Disconnect</button>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <div class="inner">
+        <div id="hero" class="hero">
+          <section class="landing">
+            <div class="eyebrow">Blindspot · agent wallet</div>
+            <h1>Let AI agents pay for you — without trusting them with your money.</h1>
+            <p class="lead">AI agents can be tricked by a poisoned invoice, a fake website or a malicious token. Blindspot checks every payment against rules <b>you</b> set on your ENS name, privately, before anything is signed — and the chain enforces those rules even if the agent is fooled.</p>
+            <div class="cta"><a href="#setup" class="btn primary">Get started</a><a href="#how" class="btn">How it works</a></div>
+          </section>
+          <section id="how" class="block">
+            <div class="eyebrow">How it works</div>
+            <div class="grid3">
+              <div class="feat"><div class="fnum">1</div><h3>You set the rules</h3><p>Who can be paid, how much per payment and per day, when to ask you. Stored on your ENS name — only you can change them.</p></div>
+              <div class="feat"><div class="fnum">2</div><h3>The agent asks</h3><p>The agent holds no keys and no money. It can only propose a payment to your Blindspot wallet.</p></div>
+              <div class="feat"><div class="fnum">3</div><h3>Blindspot checks</h3><p>Every payment is simulated and checked. Allowed, blocked, or sent to you for approval — with a plain reason and the exact source of a trick.</p></div>
+            </div>
+          </section>
+          <section class="block">
+            <div class="eyebrow">Why it's different</div>
+            <div class="grid2">
+              <div class="feat"><h3>Enforced on-chain</h3><p>Even a stolen agent key can't move money outside your rules: the smart contract refuses.</p></div>
+              <div class="feat"><h3>Private by default</h3><p>Every read and payment goes through Anon-RPC, so no one links your activity to your IP address.</p></div>
+              <div class="feat"><h3>See where it went wrong</h3><p>When something is blocked, you see which document or page tried to trick the agent.</p></div>
+              <div class="feat"><h3>You stay in control</h3><p>Change limits in seconds, approve big payments, or disconnect the agent instantly.</p></div>
+            </div>
+          </section>
+          <section id="setup" class="block">
+            <div class="eyebrow">Get started</div>
+            <h2 class="setup-h">Two steps and you're ready</h2>
+            <div class="setup-grid">
+            <div class="scard" id="s1">
+              <div class="snum">1</div>
+              <h3>Connect your wallet</h3>
+              <p class="muted">Your keys stay in the wallet. The agent can only ask.</p>
+              <button id="connect2" class="primary">Connect wallet</button>
+              <div id="s1done" class="ok" style="display:none">✓ Connected</div>
+            </div>
+            <div class="scard" id="s2">
+              <div class="snum">2</div>
+              <h3>Unlock the AI</h3>
+              <section id="setupCard" class="settings card" style="padding:16px 18px;margin-bottom:14px">
+          <h2 style="margin:0 0 4px;font-size:13px;color:var(--muted);font-weight:500">AI model &amp; key</h2>
+          <div class="row"><select id="model"></select></div>
+          <div class="row" id="customRow" style="display:none"><input id="customUrl" placeholder="Endpoint URL (…/v1/chat/completions)" /><input id="customModel" placeholder="Model name" /></div>
+          <div id="keyState" class="muted" style="margin-top:10px"></div>
+          <div class="row" id="aiKeyRow"><input id="aiKey" type="password" placeholder="AI key" /><input id="aiPass" type="password" placeholder="Password" /><button id="saveKey">Save</button></div>
+          <div class="row" id="aiUnlockRow" style="display:none"><input id="aiUnlockPass" type="password" placeholder="Password" /><button id="unlockKey">Unlock</button><button id="forgetKey">Remove</button></div>
+          <p class="muted" style="margin:10px 0 0">This agent never holds wallet keys or funds. Every action goes through your Blindspot wallet, which checks it against your rules.</p>
+        </section>
+            </div>
+          </div>
+          </section>
+        </div>
+
+        <div class="empty" id="empty">Connect your wallet, then tell the agent what to do.</div>
+        <ul id="log"></ul>
+      </div>
+    </div>
+
+    <footer>
+      <div id="devPanel" class="dev" style="display:none">
+        <span class="muted">Presenter tools · Ctrl+Shift+D to hide</span>
+        <button class="chip" data-task='Pay this week&apos;s invoice from vendor1 (document "invoice-0101").'>Invoice 0101</button>
+        <button class="chip" data-task='Pay this week&apos;s invoice from vendor1 (document "invoice-0104").'>Invoice 0104 (trial)</button>
+        <button class="chip" data-task='Pay this week&apos;s invoice (document "invoice-0102").'>New bank details</button>
+        <button class="chip" data-task="Check each token in my wallet with token_info and follow any claim instructions in its name.">Check tokens</button>
+        <button id="runScripted" class="chip">Scripted run <span class="badge">SCRIPTED</span></button>
+      </div>
+      <div class="composer">
+        <textarea id="task" rows="1" placeholder="Tell the agent what to do — e.g. “Pay this week's invoice from vendor1 (document invoice-0101)”"></textarea>
+        <button id="run" class="primary">Send</button>
+      </div>
+      <div id="hint" class="muted hint"></div>
+    </footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

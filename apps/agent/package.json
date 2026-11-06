@@ -1,0 +1,20 @@
+{
+  "name": "@blindspot/agent",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "Outside agent app (Step 3a): an LLM agent that holds no keys and no funds and connects to the Blindspot wallet over a session.",
+  "scripts": {
+    "serve": "vite --config vite.config.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@blindspot/core": "workspace:*",
+    "@blindspot/sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "5.6.3",
+    "vite": "5.4.11"
+  }
+}
