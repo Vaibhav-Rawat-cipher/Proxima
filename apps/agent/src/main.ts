@@ -4,7 +4,7 @@
 import { connect, type BlindspotSession } from '@blindspot/sdk';
 import { RULES_FIRST, SYSTEM_PROMPT, decryptSecret, encryptSecret, openAiCompatibleLlm, runAgentWith, type EncryptedKey, type LlmResponse } from '@blindspot/core';
 
-declare const __AGENT__: { walletUrl: string };
+declare const __AGENT__: { walletUrl: string; llmProxyPath: string };
 const WALLET_URL = __AGENT__.walletUrl;
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const esc = (s: unknown) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
@@ -12,8 +12,14 @@ const esc = (s: unknown) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCode
 // ------------------------------------------------------------------ models
 type ModelChoice = { label: string; url: string; model: string; keyName: string; keyRequired: boolean; extraBody?: Record<string, unknown> };
 const GROQ = 'https://api.groq.com/openai/v1/chat/completions';
+/** Hosted site only: Blindspot's rate-limited LLM proxy on this app's own origin (declared backend; holds the key). */
+const HOSTED: Record<string, ModelChoice> = __AGENT__.llmProxyPath
+  ? { blindspot: { label: 'Blindspot AI · gpt-oss-120b (free, rate-limited)', url: `${location.origin}${__AGENT__.llmProxyPath}`, model: 'openai/gpt-oss-120b', keyName: 'hosted', keyRequired: false } }
+  : {};
+const DEFAULT_MODEL = __AGENT__.llmProxyPath ? 'blindspot' : 'groq-120b';
 const MODELS: Record<string, ModelChoice> = {
-  'groq-120b': { label: 'Groq · openai/gpt-oss-120b (default)', url: GROQ, model: 'openai/gpt-oss-120b', keyName: 'groq', keyRequired: true, extraBody: { reasoning_format: 'hidden' } },
+  ...HOSTED,
+  'groq-120b': { label: `Groq · openai/gpt-oss-120b${__AGENT__.llmProxyPath ? ' (your key)' : ' (default)'}`, url: GROQ, model: 'openai/gpt-oss-120b', keyName: 'groq', keyRequired: true, extraBody: { reasoning_format: 'hidden' } },
   'groq-20b': { label: 'Groq · openai/gpt-oss-20b', url: GROQ, model: 'openai/gpt-oss-20b', keyName: 'groq', keyRequired: true, extraBody: { reasoning_format: 'hidden' } },
   custom: { label: 'Custom OpenAI-compatible endpoint (incl. local)', url: '', model: '', keyName: 'custom', keyRequired: false },
 };
@@ -41,6 +47,15 @@ function renderKey() {
   const c = choice();
   $('customRow').style.display = c.keyName === 'custom' ? '' : 'none';
   const k = c.keyName;
+  if (k === 'hosted') {
+    // Hosted model: no key in the browser at all (the proxy holds it).
+    $('keyTitle').textContent = 'AI ready';
+    $('keySub').textContent = 'You are using Blindspot’s free, rate-limited AI. To use your own key, pick another model below.';
+    $('keyState').innerHTML = '';
+    for (const id of ['aiKeyRow', 'aiUnlockRow', 'forgetKey']) $(id).style.display = 'none';
+    if ($('hint')) renderSteps();
+    return;
+  }
   const unlocked = unlockedKeys.has(k);
   const stored = Boolean(storedKey(k));
   $('keyTitle').textContent = unlocked ? 'AI ready' : stored ? 'Welcome back' : 'Add your AI key';
@@ -562,7 +577,7 @@ addEventListener('keydown', (e) => {
     toggleDev();
   }
 });
-$<HTMLSelectElement>('model').value = 'groq-120b'; // default every load (browsers restore old form values)
+$<HTMLSelectElement>('model').value = DEFAULT_MODEL; // default every load (browsers restore old form values)
 addEventListener('unhandledrejection', (e) => note(`Something went wrong: ${(e.reason as Error)?.message ?? e.reason}`, 'bad'));
 addEventListener('error', (e) => note(`Something went wrong: ${e.message}`, 'bad'));
 renderKey();
