@@ -1,5 +1,5 @@
 // Outside agent app (Step 3a). An ordinary tool-calling LLM agent that holds NO wallet keys and NO funds. It
-// connects to the Proxima wallet with @blindspot/sdk (popup + owner approval + session) and can only ask the
+// connects to Proxima with @blindspot/sdk (popup + owner approval + session) and can only ask the
 // wallet to run tools.
 import { connect, type BlindspotSession } from '@blindspot/sdk';
 import { RULES_FIRST, SYSTEM_PROMPT, decryptSecret, encryptSecret, openAiCompatibleLlm, runAgentWith, type EncryptedKey, type LlmResponse } from '@blindspot/core';
@@ -254,7 +254,7 @@ async function doConnect(): Promise<boolean> {
   let ok = false;
   // The chat already shows this attempt (the agent's connect_wallet step + the working line): no extra notes here.
   try {
-    const s = await connect({ walletUrl: WALLET_URL, agentName: 'Proxima agent', features: 'popup,width=420,height=740' });
+    const s = await connect({ walletUrl: WALLET_URL, agentName: 'Proxima', features: 'popup,width=420,height=740' });
     session = s;
     lastEnded = null;
     s.onEnded((reason) => {
@@ -280,7 +280,7 @@ $('disconnect').onclick = () => {
 
 // ------------------------------------------------------------------ chat log (plain words; technical details folded)
 const STEP: Record<string, string> = {
-  connect_wallet: 'Connecting to your Proxima wallet (SDK connect())',
+  connect_wallet: 'Connecting to Proxima (SDK connect())',
   disconnect_wallet: 'Disconnecting the wallet',
   get_rules: 'Reading your rules',
   get_balances: 'Checking balances',
@@ -345,7 +345,7 @@ function note(text: string, cls = '') {
   add(`sys ${cls}`, esc(text));
 }
 const DONE: Record<string, string> = {
-  connect_wallet: '✓ Connected to your Proxima wallet',
+  connect_wallet: '✓ Connected to Proxima',
   disconnect_wallet: '✓ Disconnected the wallet',
   get_rules: '✓ Read your rules',
   get_balances: '✓ Checked balances',
@@ -439,12 +439,12 @@ function friendlyError(m: string): string {
 // are only offered to the model once a session exists.
 const CONNECT_TOOL = {
   name: 'connect_wallet',
-  description: "Connect to the owner's Proxima wallet with the Proxima SDK. Opens the wallet; the owner approves the connection there. Returns the agent's ENS name and the owner's current rules. Call this when the user asks to connect, or before any task that needs the wallet.",
+  description: "Connect to the owner's wallet through Proxima. Opens the wallet; the owner approves the connection there. Returns the agent's ENS name and the owner's current rules. Call this when the user asks to connect, or before any task that needs the wallet.",
   parameters: { type: 'object', properties: {}, additionalProperties: false },
 };
 const DISCONNECT_TOOL = {
   name: 'disconnect_wallet',
-  description: 'End the current Proxima wallet session. Only call this when the user asks to disconnect.',
+  description: 'End the current Proxima session. Only call this when the user asks to disconnect.',
   parameters: { type: 'object', properties: {}, additionalProperties: false },
 };
 const CONNECT_PROMPT =
@@ -458,13 +458,13 @@ const currentTools = (): ToolDef[] => (connectedNow() ? [...session!.tools, DISC
  *  owner clicks one button in the chat and connect() runs from that click. Resolves true once connected. */
 function connectViaButton(): Promise<boolean> {
   return new Promise((resolve) => {
-    const li = add('sys warn', 'The agent wants to connect to your Proxima wallet. <button class="primary" data-act="open">Open wallet to connect</button> <button data-act="cancel">Not now</button>');
+    const li = add('sys warn', 'The agent wants to connect to Proxima. <button class="primary" data-act="open">Open wallet to connect</button> <button data-act="cancel">Not now</button>');
     if (!li) return resolve(false);
     working('Waiting for you to open the wallet…');
     // The agent's connect_wallet step line reports the outcome, so this prompt simply goes away.
     li.querySelector<HTMLButtonElement>('[data-act="open"]')!.onclick = () => {
       li.remove();
-      working('Opening your Proxima wallet — unlock it and approve the connection there…');
+      working('Opening Proxima — unlock it and approve the connection there…');
       void doConnect().then(resolve);
     };
     li.querySelector<HTMLButtonElement>('[data-act="cancel"]')!.onclick = () => {
@@ -531,7 +531,7 @@ async function run() {
         onModelReply: (res, step) => {
           logReply(res, step);
           const t = res.toolCalls[0]?.name;
-          if (t === 'connect_wallet' && !connectedNow()) working('Opening your Proxima wallet — approve the connection there…');
+          if (t === 'connect_wallet' && !connectedNow()) working('Opening Proxima — approve the connection there…');
           else if (t) working(t === 'execute' ? 'Waiting for your approval in the wallet window…' : t === 'propose' ? 'The wallet is simulating and checking the payment…' : `${STEP[t] ?? t} (privately, through the wallet)…`);
         },
         onToolResult: (name, content) => {
