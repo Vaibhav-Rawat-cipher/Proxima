@@ -1,0 +1,19 @@
+{
+  "name": "@blindspot/relayer",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "Gas-only relayer for Step 3d trial agents: it may only call TrialProvisioner.provision(agent). Holds a little Sepolia ETH, never an agent key or Safe funds. Per-IP rate limit, kill switch. Declared in README / CROPS.",
+  "scripts": {
+    "new-key": "node new-key.mjs",
+    "serve": "node serve.mjs",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.8"
+  }
+}
