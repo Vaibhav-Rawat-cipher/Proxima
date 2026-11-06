@@ -1,0 +1,20 @@
+{
+  "name": "@blindspot/check-e2e-milestone",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "Step 2 end-to-end milestone on live Sepolia, every read and broadcast through Anon-RPC (Nox). Local check page only (127.0.0.1), never deployed.",
+  "scripts": {
+    "serve": "node serve.mjs"
+  },
+  "dependencies": {
+    "@anon-rpc/browser-harness": "0.4.0",
+    "@blindspot/core": "workspace:*",
+    "@blindspot/shared": "workspace:*",
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "vite": "5.4.11"
+  }
+}

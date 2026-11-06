@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Blindspot milestone</title>
+    <style>
+      body { font: 14px/1.45 system-ui, sans-serif; margin: 24px; max-width: 980px; color: #1a1a1a; background: #fafafa; }
+      h1 { font-size: 20px; } h2 { font-size: 15px; margin: 0 0 8px; }
+      section { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 14px 16px; margin: 12px 0; }
+      button { font: inherit; padding: 6px 12px; margin: 4px 6px 4px 0; cursor: pointer; }
+      button:disabled { opacity: .5; cursor: default; }
+      input, textarea { font: 13px ui-monospace, monospace; padding: 5px; }
+      pre { background: #f4f4f4; padding: 10px; border-radius: 6px; white-space: pre-wrap; word-break: break-word; max-height: 420px; overflow: auto; margin: 6px 0; }
+      .warn { color: #8a4b00; } .ok { color: #116b2a; } .bad { color: #a01818; }
+      #approval { border: 2px solid #c27c00; display: none; }
+      .muted { color: #666; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <h1>Blindspot — Step 2 end-to-end milestone (live Sepolia, Nox)</h1>
+    <p class="muted">Local check page (127.0.0.1 only, never deployed). Every read and broadcast goes through Anon-RPC (Nox). Keys are pasted once, stored encrypted with your passphrase (PBKDF2-SHA256 600k + AES-GCM) and unlocked in memory only.</p>
+
+    <section><h2>0 · Anon-RPC (Nox)</h2><div id="nox">starting…</div><div id="meter" class="muted"></div></section>
+
+    <section>
+      <h2>Keys</h2>
+      <div>Agent key: <span id="agentKeyState">-</span></div>
+      <div>Owner key (only for step 4b): <span id="ownerKeyState">-</span></div>
+      <p><input id="pk" type="password" size="70" placeholder="paste a private key (0x…) to import it" />
+        <button id="importAgent">Import as agent key</button><button id="importOwner">Import as owner key</button></p>
+      <p><input id="pass" type="password" size="30" placeholder="passphrase (8+ characters)" />
+        <button id="unlock">Unlock keys (memory only)</button><button id="forget">Forget stored keys</button></p>
+    </section>
+
+    <section id="approval">
+      <h2>Approve this real transaction?</h2>
+      <pre id="approvalText"></pre>
+      <button id="approveBtn">Approve &amp; send</button><button id="rejectBtn">Reject</button>
+    </section>
+
+    <section>
+      <h2>Milestone steps</h2>
+      <button id="s1" disabled>1 · Scripted agent pays 12 MockUSDC invoice (ALLOW → real tx)</button><br />
+      <button id="s2" disabled>2 · Real LLM reads an injected invoice (expect BLOCK + origin)</button>
+      <button id="s2fallback" disabled>2 · scripted fallback (labelled)</button><br />
+      <label>3 · stolen-key test (outside the wallet) — type <b>I UNDERSTAND</b>: <input id="s3confirm" size="14" /></label>
+      <button id="s3" disabled>3 · Direct module bypass from the agent key (expect on-chain revert)</button><br />
+      <button id="s4" disabled>4 · Agent pays 22 MockUSDC invoice (expect ASK_OWNER + origin)</button>
+      <button id="s4b" disabled>4b · Owner approves the 22 MockUSDC via a Safe transaction</button>
+    </section>
+
+    <section><h2>Log</h2><pre id="log"></pre></section>
+    <section><h2>Results (copy and paste this back)</h2><textarea id="results" rows="14" style="width:100%"></textarea><br /><button id="copy">Copy results</button></section>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
