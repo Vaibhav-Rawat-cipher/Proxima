@@ -41,7 +41,7 @@ import { connectOwnerWallet, hasBrowserWallet, onOwnerWalletChange, ownerWallet,
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const esc = (s: unknown) => redact(String(s)).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
-declare const __WALLET__: { relayerUrl: string };
+declare const __WALLET__: { relayerUrl: string; agentUrl: string };
 // Agent profiles: the presenter's demo agent, or a self-serve trial agent (Step 3d) on the trial registry / Safe / module.
 type Profile = { kind: 'demo' | 'trial'; label: string; ensName: string; agent: Address; deployment: Deployment; expiresAt?: string };
 const demoDeployment = deploymentFromConfig(cfg as never);
@@ -401,7 +401,7 @@ const host = new WalletHost({
   onChange: (list) => renderSessions(list),
 });
 
-const AGENT_APP = 'http://127.0.0.1:5180/';
+const AGENT_APP = __WALLET__.agentUrl;
 /** "What do I do next?" on Home, for every state of the flow. */
 function renderGuide() {
   const active = host.list().filter((s) => s.active);

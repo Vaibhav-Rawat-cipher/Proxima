@@ -7,7 +7,8 @@
   "description": "Outside agent app (Step 3a): an LLM agent that holds no keys and no funds and connects to the Blindspot wallet over a session.",
   "scripts": {
     "serve": "vite --config vite.config.ts",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "vite build"
   },
   "dependencies": {
     "@blindspot/core": "workspace:*",
