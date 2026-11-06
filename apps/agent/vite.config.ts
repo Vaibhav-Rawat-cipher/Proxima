@@ -8,7 +8,7 @@ export default defineConfig({
   server: { host: '127.0.0.1', port: 5180, strictPort: true },
   define: {
     __AGENT__: JSON.stringify({
-      walletUrl: process.env.AGENT_WALLET_URL ?? (onVercel ? 'https://blindspot-wallet.vercel.app/' : 'http://127.0.0.1:5181/'),
+      walletUrl: process.env.AGENT_WALLET_URL ?? (onVercel ? 'https://proxima-wallet.vercel.app/' : 'http://127.0.0.1:5181/'),
       // Path of the hosted LLM proxy on this app's own origin; empty = no hosted model offered.
       llmProxyPath: process.env.AGENT_LLM_PROXY_PATH ?? (onVercel ? '/api/chat' : ''),
     }),

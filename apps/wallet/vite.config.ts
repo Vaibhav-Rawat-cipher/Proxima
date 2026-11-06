@@ -15,7 +15,7 @@ export default defineConfig({
       // Gas-only trial relayer: the local server, or "/api" on the hosted wallet (same origin, no CORS).
       relayerUrl: process.env.WALLET_RELAYER_URL ?? (onVercel ? '/api' : 'http://127.0.0.1:8788'),
       // The example agent app (only used for the "open the agent app" link).
-      agentUrl: process.env.WALLET_AGENT_URL ?? (onVercel ? 'https://blindspot-agent.vercel.app/' : 'http://127.0.0.1:5180/'),
+      agentUrl: process.env.WALLET_AGENT_URL ?? (onVercel ? 'https://proxima-agent.vercel.app/' : 'http://127.0.0.1:5180/'),
     }),
   },
 });
