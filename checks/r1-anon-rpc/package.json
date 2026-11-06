@@ -1,0 +1,18 @@
+{
+  "name": "@blindspot/check-r1-anon-rpc",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "Risk check R1 (SPEC §18): eth_blockNumber + eth_simulateV1 to a Sepolia RPC through Anon-RPC (Nox, then tor-js) from a browser page. Local check only, never deployed.",
+  "scripts": {
+    "serve": "node serve.mjs"
+  },
+  "dependencies": {
+    "@anon-rpc/browser-harness": "0.4.0",
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "vite": "5.4.11"
+  }
+}
