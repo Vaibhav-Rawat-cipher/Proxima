@@ -1,0 +1,24 @@
+{
+  "name": "@blindspot/wallet",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "Blindspot wallet (Step 3a, presenter mode): agent key encrypted in the browser, rules from ENS, every check, Approve & send, Anon-RPC (Nox). Serves sessions to outside agent apps.",
+  "scripts": {
+    "serve": "node serve.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "new-rules-key": "node new-rules-key.mjs"
+  },
+  "dependencies": {
+    "@anon-rpc/browser-harness": "0.4.0",
+    "@blindspot/core": "workspace:*",
+    "@blindspot/shared": "workspace:*",
+    "viem": "^2.21.0",
+    "@blindspot/sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "5.6.3",
+    "vite": "5.4.11"
+  }
+}
