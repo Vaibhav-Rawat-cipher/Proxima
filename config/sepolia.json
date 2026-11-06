@@ -1,0 +1,203 @@
+{
+  "chainId": 11155111,
+  "ens": {
+    "source": "https://docs.ens.domains/learn/deployments (Sepolia ENSv2)",
+    "sourceCommit": "ensdomains/contracts-v2@07e55a056f5b6a9c90119f501bdd05714e67dddd",
+    "checkedAt": "2026-11-05",
+    "RootRegistry": "0xb458d6a3a77919449d03e7a6903c26827c1ec43f",
+    "ETHRegistry": "0xd4ebcbbdf463c9c45784603db0ddd499bc44a8b4",
+    "ETHRegistrar": "0xf633e7fc17e2bbe0d0965d18ec1821dcb754a3d3",
+    "StandardRentPriceOracle": "0x8196665d4ca7488b6474a9ec8e7d2719fb42263a",
+    "VerifiableFactory": "0xda70306c98e97ece36f997a21368e53298572991",
+    "UserRegistryImpl": "0x9bd8a88719068d09ecee662f36c0e3856708366a",
+    "PermissionedResolverImpl": "0x115eb53f0c60696633855f90b138178fb40b2b2c",
+    "UniversalResolverV2": "0x24e1d8e068620b647ca097f961a61055f4f42d72",
+    "UpgradableUniversalResolverProxy": "0xeEeEEEeE14D718C2B47D9923Deab1335E144EeEe",
+    "MockUSDC": "0x240b0316df57887dbbe58b586508b19e633a14aa",
+    "MockDAI": "0xf6fac8a58a0be13b9197f27c41b73162fe32572b"
+  },
+  "safe": {
+    "source": "https://github.com/safe-global/safe-deployments (src/assets/v1.4.1, Sepolia: canonical)",
+    "version": "1.4.1",
+    "checkedAt": "2026-11-05",
+    "SafeProxyFactory": "0x4e1DCf7AD4e460CfD30791CCC4F9c8a4f820ec67",
+    "Safe": "0x41675C099F32341bf84BFc5382aF534df5C7461a",
+    "CompatibilityFallbackHandler": "0xfd0732Dc9E303f09fCEf3a7388Ad10A83459Ec99"
+  },
+  "anonRpc": {
+    "source": "https://ethereum.github.io/anon-rpc/adopters/ (specifier addresses); hashes read on-chain from workerHash()",
+    "harness": "@anon-rpc/browser-harness@0.4.0",
+    "nox": {
+      "chain": "sepolia",
+      "specifier": "0x35133267A8F7EC35046a83DCA0f4Ca8A6e1b7A9A",
+      "pinnedWorkerHash": "0xd9fa04b080a33062680a27cad828196bfb04615a0ebc76bcbffedb6dcbe838d4",
+      "specifierOwner": "0xb18ddF10a9F6a0b9143d05B294815a83d3fa69C5",
+      "checkedAt": "2026-11-06",
+      "config": null
+    },
+    "torJs": {
+      "chain": "mainnet",
+      "specifier": "0x700dA3193D35fA54Cd3fBf29B66f2a2A0385659e",
+      "pinnedWorkerHash": "0x5b62f358ce7a2b94ee9bc3a0e6a08757db68fa08fc348276f31eda788aec818b",
+      "specifierOwner": "0x6d25087f4a72348AC367C3df825e7e94c9390915",
+      "checkedAt": "2026-11-06",
+      "config": {
+        "gateways": [
+          "152.236.3.22:12298:uEiCH0VdbhryzJcMtCfB0vLA4sOvHdQ4hq5w7CopcwU59bQ"
+        ]
+      }
+    }
+  },
+  "parentName": "blindspot-demo.eth",
+  "parentExpiry": "2027-11-05T19:13:48Z",
+  "owner": "0x562044b9Cf72d267c7499Afc8aA5FD3Fcdf4E768",
+  "safeAddress": "0x308924321a579844C0d7FA46Ea49dBec80a2a3F7",
+  "module": "0x1BBeEe9eA550755Ae99566F7C2b6a9b381D4b874",
+  "moduleVerified": "https://sepolia.etherscan.io/address/0x1bbeee9ea550755ae99566f7c2b6a9b381d4b874#code",
+  "agentRegistry": "0x6C4708DfF27c7e43CCa16467F65F041E8ba2a5Ce",
+  "agentResolver": "0xd8CB5CF0b1A80179Ca8B8d5540e9e12077408aB8",
+  "deployTxs": {
+    "A.mint": "0xea21cf0d612e46452a61d9a0f34e611d3463ea8e0b381d2dc0b5ed2135499d08",
+    "A.deployUserRegistry": "0xff4ea376487d5ba6bbfba75533442e276d73ba63560757de6aecab8c9372a2ca",
+    "A.deployAgentResolver": "0x0f541c84fb6389f015d84681a3945b73ea87777cffeda87d3f39cf9f03787262",
+    "A.approveRegistrar": "0xf4a54eee2a9a327100cb943bd6847dfdd9d62dedbc43b6cd29aed46cda1cef1b",
+    "A.commit": "0xa0e21c84a8d9ae0ea5cecab610699e31d7e2b64a2c46b76451056eaa5f987a00",
+    "B.registerParent": "0x7488ab6bcdfa5ece58ca956322c5b3fdd7d50014bce6ceef9884e9b06ae8232e",
+    "B.registerAgent": "0x62ba890f84da41d27fdc56b7eadc44f95cf0d11258f0e33bac1ea523d8212077",
+    "B.setPolicy": "0x6c1af29a7e5e37878c7886e8d3a0eb5d2634c4f1ed72b67bb2b579756f1ac0a2",
+    "B.grantAgentStatus": "0xb4c00b5540207ab9120988879f04e48b55dee3d29d5b7f03d91a672f0df4a678",
+    "C.createSafe": "0x14f59127690751c3af2a5b3948913f6d4175bcfa736a42568f2fe866e75727e3",
+    "C.deployModule": "0x3c7c46165a8209b3f2708489245363675c95543979e4cb152a367124299bb752",
+    "C.enableModule": "0x85b441a7f31b120a2c1f015af3a2bfad974bd25bb41b0ffc3f742988f37345ad",
+    "C.fundEth": "0xf3f4b499dfe8d370aba0e2f27d301b1e5d441c8ed1fc9ae76cd5d2a1269da720",
+    "C.fundUsdc": "0xe3594333140b14cf75081c69fe1bae57f305d506080908452e6fa224cf3b95ed",
+    "D.setAgentContext": "0x7894f4a7b3970c43581d4f2027f98d6ad3ba19dddf19b91f970c140f1e2f2cf6",
+    "D.setAgentAddr": "0x9041e28213ec71fd1bf5917d7dabe8d2f1f4431c87d374aec7955f9f447e25a1",
+    "D.deployPayeeResolver": "0x53efaf4500d019f6cfe059894ae6efb2e6c4f3df5f2fda8d3c406ddc8dc39d6d",
+    "D.registerVendor1": "0xc675b3c63bb9f24000ea7d4c58b6b3fd857e737c9e4c151b717cde5d9fb6d9f4",
+    "D.addrVendor1": "0x39a59d5055431cff117e857865e32437ff80cbebd6287de8f14c80f13e888b6e",
+    "D.registerVendor2": "0x6a5789ff3b7042db241ad4461bd285194f3a12a9612b967cdfd083376d1af5af",
+    "D.addrVendor2": "0x56335f30f24d5d2ce35240de21d287a6672447048e0faa70f91b82765a2358ef",
+    "final.fundAgent": "0xc30cc2feaac6f59b9ccd5edf5589829a82bc7419fff13cb7ef3df4c1363fa568",
+    "final.agentPayVendor1": "0x691588f6442e62396f9f83d80af55f3f17f2a5559398f78289a9a8d5c13a08de"
+  },
+  "commitment": {
+    "committedAt": "2026-11-05T18:59:36Z",
+    "registerFrom": "2026-11-05T19:00:36Z",
+    "expiresAt": "2026-11-06T18:59:36Z",
+    "usedBy": "B.registerParent"
+  },
+  "agents": {
+    "demo": {
+      "name": "demo.blindspot-demo.eth",
+      "address": "0xab5437DcC26cFA763692Ab2e3e6Ee46D11Fc6DF1",
+      "resolver": "0xd8CB5CF0b1A80179Ca8B8d5540e9e12077408aB8",
+      "expiry": "2027-02-03T19:13:24Z",
+      "policyVersion": 1,
+      "policyKeccak": "0x6447013313ce6796dfe121e460ce157dccd7b4513b189eff99612a13207a1453",
+      "policyHistory": [
+        {
+          "keccak": "0x43ba3e99cdca67efdf80aa58c0e4b793feae77c2998013be15df01e335e9ab9b",
+          "from": "2026-11-05",
+          "note": "Step 1: MockUSDC 25/tx, 50/day"
+        },
+        {
+          "keccak": "0x6447013313ce6796dfe121e460ce157dccd7b4513b189eff99612a13207a1453",
+          "from": "2026-11-06",
+          "tx": "0xdbd8c9fc23105662862a6e0d0d7f57ec6d829a0969715b6df8156343ad53b2e9",
+          "note": "owner raised MockUSDC daily cap 50 → 100 (one setData on ENS, no redeploy)"
+        }
+      ]
+    }
+  },
+  "payees": {
+    "vendor1": "0x22dbbC1A9341064b3CA3e7c016D5cc22383dDe41",
+    "vendor2": "0xc7F3D37B90d2Ef6dBFD419B71354F74132c619B4"
+  },
+  "payeeNames": {
+    "resolver": "0xEaEF88F8746a175E492bfE3DCbAd4c929b6720dd",
+    "vendor1": "vendor1.blindspot-demo.eth",
+    "vendor2": "vendor2.blindspot-demo.eth"
+  },
+  "demo": {},
+  "testbed": {
+    "note": "Sepolia testbed (owner decision 2026-11-06). Isolated agent name; the demo agent's rules and funds are not involved. Test contracts only.",
+    "agentLabel": "test",
+    "agentName": "test.blindspot-demo.eth",
+    "agentResolver": "0xfd18D7725eC46e5FC59F2Da4BfBBa6737d0d77FE",
+    "silentToken": "0x7014762C9BCCBC248b661c6C2797e753333C6751",
+    "depositV1Impl": "0x9070700C44F70c0cdBA74204d7f35b0084e1B084",
+    "depositV2Impl": "0xC825D7b8baa91338d935a819FeE1a7f6969EbcFB",
+    "proxyV1": "0xF4F5Be749B7bC95B72E0D4DE6994AF5A17BaE7B0",
+    "proxyUpgraded": "0xa8F644A47932581DB00B059Cb65580bB93FE5CD4",
+    "simplePool": "0xdf51eA243baBa7F71401aDFf84078d939F7bF21F",
+    "injectToken": "0xd7A4d7b8990A1998d7620538824e2f3dd668C83D",
+    "txs": {
+      "createSilentToken": "0xfeaca1e66449ca2dbc224cf326447f81bd697ecb5ebd6b8bd0b7a0e1c6fc3f6a",
+      "mintSilentToSafe": "0x18413d692141ad901a6348c7a7bb6063605f30d62994d4f2fe478fdbb294fca9",
+      "createDepositV1": "0x269fd36b0cd3cef8064108313e4e20bb97f6c3585961a8b8d1a58bca527c22fd",
+      "createDepositV2": "0x2e0f0fbf6ea2b4213eb83f8c3f91f7d0d67273ce1ff2c97505601fddd7e5a15c",
+      "createProxyV1": "0x6c3a108415f5c8c9275701706fec92e2fb9abcc35c56ec4b02fb4c37f4d6b678",
+      "createProxyUpgraded": "0xe747a9c559e9ddb31f1c896c7cf5fb4c127854efdf3420b24815825e7d74b705",
+      "upgradeProxyToV2": "0x5e93058e34472c557f524b252a4724851b8dbdebfd5b2a119e972b2e9ecf07fa",
+      "createSimplePool": "0x21e140125054dd8c1a2741af9ab62d0d6fa073c63b982ae462674075268b5c06",
+      "mintUsdcToPool": "0xb59c83cfe5fa7235923e2aeb750c2c1036c5a69470c0b2e2d836046234897256",
+      "mintDaiToSafe": "0x59e05e568a09cae4872b0934a7f57cd9889a7ac8d12aaf631f4177ca41035376",
+      "deployTestResolver": "0x30d252ef73102348be233bc0b6e2537975a2c2b627c471660116cf6eb5d8e461",
+      "registerTestAgent": "0x82f89a5b66eee5bf645c4810b24845b16873bd703d5f50ff7e81ca5bacd63d03",
+      "setTestPolicy": "0xb4c3ecc6dadc0d37786a8a70e63dfd4e83eac8bb286d919bad7cb8c6aa654ee6",
+      "setTestAgentContext": "0xe1aa0e526b7a54de7d1a509e33f883c2cdf7d72c3cb463b1bbc3441da932766b",
+      "agentSwap": "0x779ac697baef79b7b4d6c4b20a8191ecc5d56bab4729726d2b6f9b3f8a81c6e8",
+      "createInjectToken": "0x2dbd0efcceab0e6d151613e9bca561f31aa8b9f1e0cef6006e28fd36517f6084"
+    }
+  },
+  "milestone": {
+    "note": "Step 2 end-to-end milestone, 2026-11-06, live Sepolia, every read and broadcast through Nox (checks/e2e-milestone).",
+    "txs": {
+      "step1AgentPays12": "0x4fc3d68e529db161f6c6da66db0da109e6f3760088fa93d67bac3b0c7bc2d6ba",
+      "step3StolenKeyRevert": "0x8a9afffa81d72b2af496a421d8e7e1bde4d2432b60493ff765abe425cd49c73a",
+      "step4bOwnerPays22": "0x79bc8f45ba50fff960c6b74f486d8a27a23468f1662a00562c49d96dafab711a"
+    }
+  },
+  "trials": {
+    "note": "Step 3d (owner decision option A, 2026-11-06): self-serve trial agents tryN.trials.blindspot-demo.eth in their OWN registry; trial Safe + module read the trial registry only (demo Safe isolated). Provisioner roles: ROLE_REGISTRAR (root) on trialRegistry; ROLE_SET_DATA for key blindspot.policy on trialResolver.",
+    "parentName": "trials.blindspot-demo.eth",
+    "trialRegistry": "0xFDD39672df3578BC3c5A3AFee6290Bb58b2A7043",
+    "trialResolver": "0xBa844a8658fF4aEA16B88D982523586b8BC3519b",
+    "trialSafe": "0x88CeAD43440a32F176ec184853CE51771165Db80",
+    "trialModule": "0x091960751C14Fd6399a0AE001fF8b0fBC32F392e",
+    "provisioner": "0xB93A0C4663662BFCb4e31C75FF8E2D31D274b209",
+    "relayer": "0xB30f430A254563586f2bdd863035469E8Db54108",
+    "limits": {
+      "globalDailyCap": 100,
+      "relayerDailyQuota": 100,
+      "dripWei": "50000000000000",
+      "trialDuration": "24h"
+    },
+    "policy": {
+      "mockUsdcPerTx": 1,
+      "mockUsdcPerDay": 2,
+      "eth": "none",
+      "payees": [
+        "vendor1",
+        "vendor2"
+      ],
+      "keccak": "0x099718ca3e4600da474b10dc6820c1c3fdc0634630bbcbeee8623745d8cfe359"
+    },
+    "txs": {
+      "deployTrialRegistry": "0x2b3792c360e85dd08050b6446681dde0c238fdee5f58eb1a5f6727e9de23588a",
+      "registerTrialsSubregistry": "0x7b04802a4c4442007169f12cb8a211e5e0e5bc5f816fcc7435bc09c955b80cb8",
+      "deployTrialResolver": "0xb206039cfd4df53fc8db67a9cbc90c70b4e0b8c3ed723c2a5bf82b6e1dd81093",
+      "createTrialSafe": "0x787eca2c27ffb1d5eb8c62e042e8dc6dc8e259eee0eaf91d30af385a330962f7",
+      "deployTrialModule": "0xee577830c7cd34bc90920bb19ec6691b9700b3387c90f547cb6969c6c9d4d7ca",
+      "deployProvisioner": "0x0852e80e4f09958179148febd5417a3654cb3c87fd936225e52c09bd9b0aaae9",
+      "grantRegistrar": "0x3e3d68d74eeb9a90c742c3f69fc9641a29be03141b354681eb852d3fee2c75f9",
+      "grantPolicySetter": "0xcc127fd519ac1d6f6a00063880c768fabb129121c762bef5059d20f765f69aef",
+      "enableTrialModule": "0x396363175d82d40e7738b908812da3b6597477b6f74cfdb44aeeb93f8d0ca471",
+      "fundProvisioner": "0x474c40201b33cf421c6f23e436752695f8bc7b2f265713c6e0c33602b36fc11d",
+      "mintTrialSafeUsdc": "0xbb2a263bdae8d7e4788b34b395f44b47f8f1c6db9511283f1b800f3cbd7fe73c",
+      "setRelayer": "0x2def97341e69825c152b9f01da9824f36d824928986fa7a938e59fff82507be7",
+      "fundRelayer": "0xe776798edbfef806b0dd6986782fcdd34d91ca765472ab4547d778928e3fcc8e"
+    }
+  }
+}
